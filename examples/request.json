@@ -1,0 +1,18 @@
+{
+  "schema": "nuxtjp://v8-view-worker/request/v1",
+  "request_id": "service-card-001",
+  "script_id": "nuxtjp-service-card-v1",
+  "script_sha256": "bd954b068b08f679b2c90c788b907100a184097693bbf24ddd119937d4119b8e",
+  "limits": {
+    "input_bytes": 65536,
+    "output_bytes": 65536,
+    "heap_mib": 64,
+    "timeout_ms": 2000
+  },
+  "payload": {
+    "title": "NuxtJP Local Runtime",
+    "summary": "端末内の検証済み情報だけを表示します。",
+    "status_label": "ローカル",
+    "highlighted": true
+  }
+}

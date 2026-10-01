@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nuxtjp://v8-view-worker/response/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "request_id", "status", "view"],
+  "properties": {
+    "schema": { "const": "nuxtjp://v8-view-worker/response/v1" },
+    "request_id": { "type": "string" },
+    "status": { "const": "rendered" },
+    "view": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "summary", "status_label", "highlighted", "html"],
+      "properties": {
+        "title": { "type": "string" },
+        "summary": { "type": "string" },
+        "status_label": { "type": "string" },
+        "highlighted": { "type": "boolean" },
+        "html": { "type": "string" }
+      }
+    }
+  }
+}

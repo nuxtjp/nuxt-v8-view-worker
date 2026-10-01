@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nuxtjp://v8-view-worker/request/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "request_id", "script_id", "script_sha256", "limits", "payload"],
+  "properties": {
+    "schema": { "const": "nuxtjp://v8-view-worker/request/v1" },
+    "request_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+    "script_id": { "const": "nuxtjp-service-card-v1" },
+    "script_sha256": {
+      "const": "bd954b068b08f679b2c90c788b907100a184097693bbf24ddd119937d4119b8e"
+    },
+    "limits": { "$ref": "#/$defs/limits" },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "summary", "status_label", "highlighted"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "status_label": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "highlighted": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_bytes", "output_bytes", "heap_mib", "timeout_ms"],
+      "properties": {
+        "input_bytes": { "type": "integer", "minimum": 1, "maximum": 1048576 },
+        "output_bytes": { "type": "integer", "minimum": 1, "maximum": 262144 },
+        "heap_mib": { "type": "integer", "minimum": 8, "maximum": 128 },
+        "timeout_ms": { "type": "integer", "minimum": 10, "maximum": 10000 }
+      }
+    }
+  }
+}

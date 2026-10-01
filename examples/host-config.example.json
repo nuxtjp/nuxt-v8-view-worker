@@ -1,0 +1,14 @@
+{
+  "schema": "nuxtjp://v8-view-worker/host-config/v1",
+  "worker_path": "/opt/nuxtjp/bin/nuxt-v8-view-worker",
+  "worker_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "expires_unix_seconds": 4102444800,
+  "script_id": "nuxtjp-service-card-v1",
+  "script_sha256": "bd954b068b08f679b2c90c788b907100a184097693bbf24ddd119937d4119b8e",
+  "limits": {
+    "input_bytes": 65536,
+    "output_bytes": 65536,
+    "heap_mib": 64,
+    "timeout_ms": 2000
+  }
+}

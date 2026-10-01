@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nuxtjp://v8-view-worker/host-config/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "worker_path", "worker_sha256", "expires_unix_seconds",
+    "script_id", "script_sha256", "limits"
+  ],
+  "properties": {
+    "schema": { "const": "nuxtjp://v8-view-worker/host-config/v1" },
+    "worker_path": { "type": "string", "pattern": "^/" },
+    "worker_sha256": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+    "expires_unix_seconds": { "type": "integer", "minimum": 1 },
+    "script_id": { "const": "nuxtjp-service-card-v1" },
+    "script_sha256": {
+      "const": "bd954b068b08f679b2c90c788b907100a184097693bbf24ddd119937d4119b8e"
+    },
+    "limits": { "$ref": "request.schema.json#/$defs/limits" }
+  }
+}

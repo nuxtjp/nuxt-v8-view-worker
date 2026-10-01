@@ -1,0 +1,47 @@
+[package]
+exclude = ["/registration/**", "/state/**", "/.local/**", "/.state/**", "/.data/**", "/secrets/**", "/credentials/**", "/.env", "/.env.production", "/.env.local", "/*.tgz", "/*.tar.gz", "/*.tar", "/*.zip", "/*.whl", "/*.crate", "/.ruff_cache/**", "/.mypy_cache/**", "/.tox/**", "/.nox/**", "/.hypothesis/**", "/.coverage", "/.coverage.*", "/htmlcov/**", "/lcov.info", "/junit.xml", "/*.profraw", "/*.profdata", "/*.egg-info/**", "/target/**", "/node_modules/**", "/dist/**", "/build/**", "/.cache/**", "/.pytest_cache/**", "/coverage/**"]
+name = "nuxt-v8-view-worker"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+description = "A fail-closed, process-isolated V8 view renderer for NuxtJP"
+autotests = false
+
+[dependencies]
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = "=1.0.149"
+sha2 = "=0.10.9"
+v8 = { version = "=149.2.0", optional = true }
+
+[target.'cfg(unix)'.dependencies]
+libc = "=0.2.187"
+
+[features]
+default = ["v8-engine"]
+v8-engine = ["dep:v8"]
+
+[[bin]]
+name = "nuxt-v8-view-worker"
+path = "src/bin/nuxt-v8-view-worker.rs"
+required-features = ["v8-engine"]
+
+[[test]]
+name = "host_config_file_boundary"
+path = "tests/host_config_file_boundary.rs"
+
+[[test]]
+name = "worker_contract"
+path = "tests/worker_contract.rs"
+required-features = ["v8-engine"]
+
+[profile.release]
+lto = "thin"
+strip = true
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = "deny"
+pedantic = "deny"
