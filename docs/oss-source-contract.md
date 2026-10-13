@@ -38,3 +38,28 @@ Inventory baseline source: `1e2eb64bffcc5968843307ea1149d0609ef971e1`. This base
 Rust source acceptance also runs [.github/workflows/rust-source.yml](../.github/workflows/rust-source.yml): locked all-target/all-feature tests, formatting and Clippy. This is functional source validation and does not publish an artifact or operate a real account.
 
 The actual default V8 engine and pinned host process tests pass locally with all features; metadata-only contract tests are insufficient for this repository. Runtime cancellation/output/heap limits and host configuration isolation remain part of the source acceptance suite. No live account or product deployment is involved.
+
+## Owned source and acceptance map
+
+[oss-source-map.json](oss-source-map.json) is the tracked map of package
+interfaces, declared commands, schemas, functional test sources, examples and CI
+jobs. It keeps each responsibility attached to its actual physical source owner.
+Public exports are supported only within this repository's responsibility boundary;
+a filename or schema declaration does not grant product or cloud authority.
+
+| Package | Canonical manifest | Responsibility/interface |
+| --- | --- | --- |
+| `nuxt-v8-view-worker` | [Cargo.toml](../Cargo.toml) | A fail-closed, process-isolated V8 view renderer for NuxtJP |
+
+For source acceptance, run each applicable functional CI job with the committed
+locks from an independent checkout. Match public entrypoints to their test/example
+sources in the map; test the relevant invalid input and failure boundary as well as
+the normal path. Policy-only, skipped and credential-dependent jobs do not establish
+functional coverage. Release jobs establish artifact acceptance only when actually
+run at the reviewed commit. A source-only/example repository must not be presented
+as a complete external service or a released package.
+
+Schema definitions in the map remain owned by their canonical validator and
+consumers. An absent schema file means no separate schema file is declared; it does
+not mean the runtime interface has no validation. Do not introduce another common
+schema solely to mirror an implementation type.
