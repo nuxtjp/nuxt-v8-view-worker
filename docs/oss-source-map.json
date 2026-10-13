@@ -1,0 +1,150 @@
+{
+  "repository": "nuxtjp/nuxt-v8-view-worker",
+  "purpose": "許可された単純な入力から、制限されたV8環境で表示断片を生成できます。 / Render declared scalar input into a limited view fragment using a verified Rust/V8 worker.",
+  "responsibility_boundary": "Own the documented Nuxt/browser interface and its public contracts. Account authority, external effects, product state and production hosting remain explicit consumer responsibilities.",
+  "packages": [
+    {
+      "manifest": "Cargo.toml",
+      "package": "nuxt-v8-view-worker",
+      "ecosystem": "rust",
+      "description": "A fail-closed, process-isolated V8 view renderer for NuxtJP",
+      "interfaces": {
+        "lib": "src/lib.rs",
+        "features": {
+          "default": [
+            "v8-engine"
+          ],
+          "v8-engine": [
+            "dep:v8"
+          ]
+        },
+        "bins": [
+          {
+            "name": "nuxt-v8-view-worker",
+            "path": "src/bin/nuxt-v8-view-worker.rs",
+            "required-features": [
+              "v8-engine"
+            ]
+          }
+        ],
+        "public_modules": [
+          "contract",
+          "digest",
+          "host",
+          "input",
+          "render"
+        ],
+        "public_reexports": [
+          "contract::{HostConfig, Limits, RenderRequest, RenderResponse, SCRIPT_ID, SCRIPT_SHA256}",
+          "host::launch",
+          "render::render"
+        ],
+        "implicit_bins": [
+          "src/bin/nuxt-v8-view-host.rs",
+          "src/bin/nuxt-v8-view-worker.rs"
+        ]
+      },
+      "declared_commands": {}
+    }
+  ],
+  "schema_definitions": [
+    "schemas/host-config.schema.json",
+    "schemas/request.schema.json",
+    "schemas/response.schema.json"
+  ],
+  "test_sources": [
+    "src/bin/nuxt-v8-view-host.rs",
+    "src/bin/nuxt-v8-view-worker.rs",
+    "src/host_tests.rs",
+    "src/input.rs",
+    "src/process.rs",
+    "src/render.rs",
+    "tests/host_config_file_boundary.rs",
+    "tests/worker_contract.rs"
+  ],
+  "example_sources": [
+    "examples/host-config.example.json",
+    "examples/request.json"
+  ],
+  "workflow_definitions": [
+    {
+      "path": ".github/workflows/oss-policy.yml",
+      "jobs": [
+        {
+          "job": "repository-policy",
+          "condition": null,
+          "runs_on": "ubuntu-latest",
+          "steps": [
+            {
+              "name": null,
+              "run": null,
+              "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+              "condition": null
+            },
+            {
+              "name": "Verify repository policy",
+              "run": "python3 .github/oss-policy-check.py",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": "Verify policy regression tests",
+              "run": "cd .github && python3 -m unittest discover -s policy-tests",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": "Check policy types",
+              "run": "python3 -m venv \"$RUNNER_TEMP/policy-types\"\n\"$RUNNER_TEMP/policy-types/bin/pip\" install -r .github/policy/requirements.txt\n\"$RUNNER_TEMP/policy-types/bin/mypy\" --strict .github/policy .github/oss-policy-check.py .github/policy-tests\n",
+              "uses": null,
+              "condition": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/rust-source.yml",
+      "jobs": [
+        {
+          "job": "source",
+          "condition": null,
+          "runs_on": "ubuntu-24.04",
+          "steps": [
+            {
+              "name": null,
+              "run": null,
+              "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+              "condition": null
+            },
+            {
+              "name": "Install declared Rust tooling",
+              "run": "rustup toolchain install 1.97.1 --profile minimal --component rustfmt --component clippy",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": "Test every maintained source target and feature",
+              "run": "cargo +1.97.1 test --locked --all-targets --all-features",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": "Check source formatting",
+              "run": "cargo +1.97.1 fmt --all -- --check",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": "Check all source targets",
+              "run": "cargo +1.97.1 clippy --locked --all-targets --all-features -- -D warnings",
+              "uses": null,
+              "condition": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence_policy": "Declarations and source paths are not proof of an executed acceptance. Exact CI head and result are recorded separately. No live accounts or production acceptance is inferred."
+}
