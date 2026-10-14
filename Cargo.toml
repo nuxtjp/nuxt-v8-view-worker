@@ -9,13 +9,13 @@ description = "A fail-closed, process-isolated V8 view renderer for NuxtJP"
 autotests = false
 
 [dependencies]
-serde = { version = "=1.0.228", features = ["derive"] }
-serde_json = "=1.0.149"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.152"
 sha2 = "=0.10.9"
 v8 = { version = "=149.2.0", optional = true }
 
 [target.'cfg(unix)'.dependencies]
-libc = "=0.2.187"
+libc = "=0.2.190"
 
 [features]
 default = ["v8-engine"]
