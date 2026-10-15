@@ -25,6 +25,8 @@ Render declared scalar input into a limited view fragment using a verified Rust/
 
 The V8 context exposes no host callbacks. This worker is not a general script runtime or browser.
 
+This repository is source-only: `publish = false` explicitly prevents accidental crates.io publication. Version tags identify the source snapshot; they do not advertise a signed prebuilt worker or an activated runtime.
+
 Package distribution is not activated by this documentation. Use the checked-in source and the declared dependency versions; published availability must be verified separately.
 
 ## Getting started
