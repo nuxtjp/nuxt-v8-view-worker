@@ -4,7 +4,13 @@ use std::path::Path;
 
 #[must_use]
 pub fn bytes(value: &[u8]) -> String {
-    format!("{:x}", Sha256::digest(value))
+    (Sha256::digest(value))
+        .iter()
+        .fold(String::with_capacity(64), |mut encoded, byte| {
+            use std::fmt::Write as _;
+            write!(encoded, "{byte:02x}").expect("writing to String cannot fail");
+            encoded
+        })
 }
 
 /// Computes the SHA-256 of a file without retaining its contents.
@@ -29,7 +35,13 @@ pub(crate) fn reader(source: &mut impl Read) -> Result<String, String> {
         }
         hasher.update(&buffer[..count]);
     }
-    Ok(format!("{:x}", hasher.finalize()))
+    Ok((hasher.finalize())
+        .iter()
+        .fold(String::with_capacity(64), |mut encoded, byte| {
+            use std::fmt::Write as _;
+            write!(encoded, "{byte:02x}").expect("writing to String cannot fail");
+            encoded
+        }))
 }
 
 /// Reads no more than a caller-selected byte ceiling.
